@@ -1,0 +1,45 @@
+version: '3.8'
+
+# Use this when you have MySQL already running locally
+# Usage: docker-compose -f docker-compose.local.yml up --build -d
+
+services:
+  # Backend API (uses your local MySQL)
+  backend:
+    build: ./backend
+    container_name: yoklama-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DB_HOST: host.docker.internal  # Access host machine's MySQL
+      DB_USER: root
+      DB_PASSWORD: Gims1234.
+      DB_NAME: university_attendance
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production-minimum-32-characters
+      FRONTEND_URL: http://localhost:3000
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: muraturegen987@gmail.com  # Gerçek email adresin
+      SMTP_PASS: your-app-password-here     # Gmail App Password
+      QR_ROTATION_INTERVAL: 30000
+      QR_TOKEN_EXPIRY: 30000
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend/logs:/app/logs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  # Frontend Nuxt
+  frontend:
+    build: ./frontend
+    container_name: yoklama-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NUXT_PUBLIC_API_BASE: http://localhost:3001
+      NUXT_PUBLIC_SOCKET_URL: http://localhost:3001
+    ports:
+      - "3000:3000"

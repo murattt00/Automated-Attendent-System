@@ -1,0 +1,54 @@
+# ===========================================
+# University Attendance System - Cron Jobs
+# ===========================================
+# Add these to your crontab: crontab -e
+# ===========================================
+
+# Daily database backup at 2 AM
+0 2 * * * cd /path/to/yoklama && ./scripts/backup.sh >> /var/log/attendance/backup.log 2>&1
+
+# Weekly database backup (Sunday 3 AM) with S3 upload
+0 3 * * 0 UPLOAD_TO_S3=true cd /path/to/yoklama && ./scripts/backup.sh >> /var/log/attendance/backup.log 2>&1
+
+# Clean old logs every week (Sunday 4 AM)
+0 4 * * 0 find /path/to/yoklama/backend/logs -name "*.log" -mtime +30 -delete
+
+# Weekly attendance summary emails (Monday 9 AM)
+# 0 9 * * MON cd /path/to/yoklama/backend && node scripts/send-weekly-summary.js
+
+# Check Redis health every hour
+0 * * * * redis-cli ping || systemctl restart redis-server
+
+# ===========================================
+# Backup Retention Examples
+# ===========================================
+
+# Keep backups for 7 days
+# RETENTION_DAYS=7 ./scripts/backup.sh
+
+# Keep backups for 90 days
+# RETENTION_DAYS=90 ./scripts/backup.sh
+
+# ===========================================
+# S3 Upload Examples
+# ===========================================
+
+# Backup with S3 upload
+# UPLOAD_TO_S3=true S3_BUCKET=my-bucket ./scripts/backup.sh
+
+# ===========================================
+# Environment Variables
+# ===========================================
+# You can also set these in the script or in /etc/environment:
+#
+# export BACKUP_DIR=/var/backups/attendance
+# export DB_HOST=localhost
+# export DB_PORT=3306
+# export DB_NAME=university_attendance
+# export DB_USER=root
+# export DB_PASSWORD=your_password
+# export RETENTION_DAYS=30
+# export COMPRESS=true
+# export UPLOAD_TO_S3=false
+# export S3_BUCKET=my-backup-bucket
+# ===========================================
