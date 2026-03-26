@@ -14,7 +14,7 @@ A modern, real-time QR code-based attendance system with location verification, 
 - **Role-based Access**: Separate interfaces for teachers and students
 - **Secure Authentication**: JWT-based authentication with bcrypt password hashing
 
-### Advanced Features (v1.1 - P0 Completed) ✅
+### Advanced Features (v1.1 - P0) ✅
 
 - **Redis Integration**: Scalable QR token storage with support for multiple server instances
 - **Database Migrations**: Proper Sequelize migrations for safe schema updates
@@ -22,7 +22,7 @@ A modern, real-time QR code-based attendance system with location verification, 
 - **Production Ready**: Environment variables, SSL support, Nginx configuration
 - **Docker Support**: Full Docker Compose setup with Redis, MySQL, and application containers
 
-### Professional Features (v1.2 - P1 Completed) ✅
+### Professional Features (v1.2 - P1) ✅
 
 - **📊 Analytics & Dashboard**: Comprehensive statistics for teachers and students
   - Teacher: Class performance, attendance trends, student leaderboards
@@ -307,132 +307,10 @@ POST /api/attendance/submit - Submit QR attendance (students only)
 POST /api/attendance/manual - Manual attendance (teachers only)
 ```
 
-## 🔌 Socket.io Events
-
-### Client -> Server
-
-```javascript
-"join_session" - { sessionId, role };
-"leave_session" - { sessionId, role };
-```
-
-### Server -> Client
-
-```javascript
-"qr_token" - { token, sessionId };
-"new_attendance" - { attendance };
-"joined_session" - { success, sessionId, roomName };
-```
-
-## 🎨 Customization
-
-### Change QR rotation interval
-
-Edit `.env`:
-
-```
-QR_ROTATION_INTERVAL=5000  # milliseconds
-```
-
-### Change maximum distance
-
-Edit `.env`:
-
-```
-MAX_DISTANCE_METERS=100  # meters
-```
-
-### Modify token expiry
-
-Edit `backend/utils/token.js`:
-
-```javascript
-expiresIn: "10s"; // Change to desired duration
-```
-
-## 🐛 Troubleshooting
-
-### Camera not working
-
-- Ensure HTTPS in production (HTTP only works on localhost)
-- Check browser permissions
-- Try different browser (Chrome/Firefox recommended)
-
-### Location issues
-
-- Enable location services on device
-- Check browser location permissions
-- Ensure GPS signal is available
-
-### Socket connection fails
-
-- Check CORS settings in `server.js`
-- Verify `FRONTEND_URL` in `.env`
-- Check firewall settings
-
-## 📝 Production Deployment
-
-### Backend
-
-1. Set `NODE_ENV=production`
-2. Use proper database migrations (not `sync`)
-3. Configure reverse proxy (Nginx/Apache)
-4. Enable HTTPS
-5. Set strong `JWT_SECRET`
-
-### Frontend
-
-1. Build: `npm run build`
-2. Serve with PM2 or similar
-3. Configure domain and SSL
-4. Update API URLs in production
-
-## 🤝 Contributing
-
-This project is feature-complete with production-ready enhancements!
-
-**Completed Features:**
-
-- ✅ Core attendance system with QR and location
-- ✅ P0: Redis, migrations, logging, Docker, SSL
-- ✅ P1: Analytics, enrollment workflow, email, export, backup
-
-**Optional Enhancements:**
-
-- Mobile app (React Native / Flutter)
-- Advanced reporting and visualizations
-- Integration with LMS (Canvas, Moodle)
-- Multi-language support (i18n)
-- Dark mode
-
-## 📚 Documentation
-
-- **[DEPLOYMENT_P0.md](./DEPLOYMENT_P0.md)** - Critical production features (Redis, SSL, logging, etc.)
-- **[DEPLOYMENT_P1.md](./DEPLOYMENT_P1.md)** - Professional features (Analytics, export, email, backup)
-- **[P1_QUICK_REFERENCE.md](./P1_QUICK_REFERENCE.md)** - Quick commands and API reference
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - System architecture overview
-- **[PROJECT_SUMMARY.md](./PROJECT_SUMMARY.md)** - Project summary and features
-
-## 🚀 Deployment Readiness
-
-**System Status: 95% Production Ready** ✅
-
-- ✅ Core features working
-- ✅ Security hardened (P0)
-- ✅ Scalability ready (Redis, migrations)
-- ✅ Professional features (P1)
-- ⚠️ Needs: Load testing, security audit, user testing
-
-Ready to deploy to production! Follow the deployment guides above.
 
 ## 📄 License
 
 MIT License - Feel free to use for educational purposes.
 
-## 👨‍💻 Author
-
-Senior Full Stack Developer
-
----
 
 **Note**: This system requires camera and location permissions. Always inform users and comply with privacy regulations.
